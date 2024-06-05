@@ -1,0 +1,65 @@
+// AudioRecorder.scss
+.audio-recorder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 300px;
+    margin: 0 auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
+    audio {
+      margin-bottom: 20px;
+      width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+  
+    button {
+      padding: 10px 20px;
+      margin: 5px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      
+      &.r{
+        background-color:blue;
+        &:hover{
+          background-color:rgb(0, 0, 186);
+        }
+      }
+
+      &.c{
+        background-color: cadetblue;
+        &:hover{
+          background-color: rgb(55, 111, 113);
+        }
+      }
+  
+      &.start {
+        background-color: #4caf50;
+        color: white;
+  
+        &:hover {
+          background-color: #1c6a20;
+        }
+      }
+  
+      &.stop {
+        background-color: #f44336;
+        color: white;
+  
+        &:hover {
+          background-color: #910200;
+        }
+      }
+    }
+    .hide{
+      display: none;
+    }
+  }
+  

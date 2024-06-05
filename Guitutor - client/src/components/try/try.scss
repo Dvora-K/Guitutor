@@ -1,0 +1,38 @@
+.area {
+    border: black solid 2px;
+    border-radius: 20px;
+    height: 500px;
+    width: 600px;
+    margin: auto;
+}
+
+.select {
+    margin-top: 35%;
+    width: 50%;
+    margin-left: 37%;
+}
+
+.upload-list {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+}
+
+button {
+    background-color: #4373e2;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-radius: 8px;
+  
+    &:hover {
+      background-color: #0041d8;
+    }
+  }
