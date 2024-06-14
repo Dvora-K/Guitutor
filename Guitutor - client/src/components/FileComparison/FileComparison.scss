@@ -1,0 +1,47 @@
+.file-comparison {
+    display: flex;
+    // flex-direction: column;
+    // align-items: center;
+    gap: 20px;
+    background-size: cover;
+    height: 100vh;
+    background-repeat: no-repeat;
+  
+    .comparison-section {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      justify-content: center;
+      padding-right: 100px;
+  
+      .file-content {
+        background-color: rgba(41, 17, 5, 0.116);
+        border-radius: 20px;
+        width: 25%;
+        // border: 2px solid rgba(41, 17, 5, 0.116);
+        padding: 20px;
+        overflow-wrap: break-word;
+        height: 70%;
+        margin: 10px;
+        flex-direction: column;
+  
+  
+        .content {
+          font-size: 18px;
+          white-space: pre-wrap;
+  
+          .added {
+            background-color: rgba(160, 93, 66, 0.705);
+          }
+  
+          .removed {
+            background-color: #f7d4d4;
+          }
+  
+          .unchanged {
+            background-color: #fff;
+          }
+        }
+      }
+    }
+  }

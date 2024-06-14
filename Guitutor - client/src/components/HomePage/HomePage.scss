@@ -1,0 +1,65 @@
+.HomePage {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    color: rgb(88, 54, 26);
+
+    .bg {
+        width: 100%;
+        height: 100%;
+        margin: 0 auto;
+        background-size: cover;
+        /* Cover the entire area */
+        background-position: center;
+        /* Center the image */
+        background-repeat: no-repeat;
+        /* Prevent repeating the image */
+        position: relative;
+    }
+
+    h1 {
+        margin-top: 10px;
+        font-family: 'Orbitron';
+        font-size: 80px;
+        text-align: left;
+    }
+
+    .tt {
+        // background-color: rgba(255, 255, 255, 0.31);
+        display: flex;
+        justify-content: space-between;
+        padding: 60px;
+        margin-left: 5%;
+
+        .text {
+            text-align: left;
+        }
+
+        .start {
+            font-size: 20px;
+            background-color: rgb(88, 54, 26);
+            color: white;
+            border: 2px solid rgb(88, 54, 26);
+            padding: 10px 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 35%;
+
+            &:hover {
+                background-color: white;
+                color: rgb(88, 54, 26);
+                border: 2px solid rgb(88, 54, 26);
+            }
+        }
+    }
+
+    .logo {
+        width: 30%;
+        max-width: 300px;
+        /* Adjust based on your desired maximum width */
+        height: auto;
+        margin-top: 5px;
+        margin-right: 90%;
+    }
+}

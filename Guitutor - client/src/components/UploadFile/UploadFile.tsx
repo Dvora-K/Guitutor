@@ -1,18 +1,21 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { UploadOutlined } from '@ant-design/icons';
-import { Button, Upload } from 'antd';
 import './UploadFile.scss';
+import 'primeicons/primeicons.css';
 import { useNavigate } from 'react-router-dom';
 import FileService from '../../service/file.service';
 import { Message } from 'primereact/message';
-import Loading from '../loading/loading';
-import fileService from '../../service/file.service';
+import blogoImg from '../../assets/logo-black.png'
+import bgUrl from '../../assets/pages-bg.png'
+import record from '../../assets/btn-record.png'
+import Loader from '../Loader/Loader';
+import AudioPlayer from '../AudioPlayer/AudioPlayer';
+
 interface UploadFileProps { }
 
 const UploadFile: FC<UploadFileProps> = () => {
   const [uploadedFile, setUploadedFile] = useState<any>([]);
-  const [vocalUrl, setVocalUrl] = useState<any>('');
-  const [playbackUrl, setPlaybackUrl] = useState<any>('');
+  const [vocalDrumsUrl, setVocalDrumsUrl] = useState<any>('');
+  const [tuneUrl, setTune] = useState<any>('');
   const [songWithoutGuitarUrl, setSongWithoutGuitar] = useState<any>('');
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [errorMessage, setErrorMessage] = useState('');
@@ -25,6 +28,7 @@ const UploadFile: FC<UploadFileProps> = () => {
     if (uploadedFile != '')
       sendFile();
   }, [uploadedFile])
+
   const convertFileListToArr = (songFile: FileList): [] => {
     let array: any = [];
     array.push(songFile.item(0))
@@ -47,30 +51,34 @@ const UploadFile: FC<UploadFileProps> = () => {
     setIsLoading(true);
     try {
       await FileService.send(uploadedFile);
+      getVocalDrums();
+      getTune()
+      getSongWithoutGuitar();
       setIsLoading(false); // Set isLoading to false after the request finishes
     } catch (err) {
       throw err;
     }
   }
 
-  const getVocal = () => {
-    const vocal = getSourceFromServer('vocal');
-    setVocalUrl(vocal)
+  const getVocalDrums = async () => {
+    const vocal = await getSourceFromServer('vocal_drums');
+    setVocalDrumsUrl(vocal)
+    console.log("VocalDrumsUrl", vocal)
   };
 
-  const getPlayback = () => {
-    const playback = getSourceFromServer('playback');
-    setPlaybackUrl(playback)
+  const getTune = async () => {
+    const tune = await getSourceFromServer('tune');
+    setTune(tune)
+    console.log("tuneUrl", tune)
   }
-  const getSongWithoutGuitar = () => {
-    const song = getSourceFromServer('song_without_guitar');
+  const getSongWithoutGuitar = async () => {
+    const song = await getSourceFromServer('song_without_guitar');
     setSongWithoutGuitar(song)
   };
 
   const getSourceFromServer = async (req: string) => {
     try {
-      const url: string = await FileService.getSource(req);
-      setChoice(url);
+      const url = await FileService.getSource(req);
       return url;
     }
     catch (err) {
@@ -78,35 +86,55 @@ const UploadFile: FC<UploadFileProps> = () => {
     }
   }
 
-  return <div className="UploadFile">
-    <input style={{ display: 'none' }} ref={uploadInputRef} type='file' onChange={selectedFile} ></input>
-    {
-      uploadedFile == '' ? <div>
-        <div className='select' onDragOver={(event) => { event.preventDefault() }} >
-          <Button style={{ backgroundColor: '#0041d8', color: '#fff' }} onClick={() => { uploadInputRef.current.click() }} icon={<UploadOutlined />}>Select Song</Button></div>
-        {errorMessage && <Message severity="error" text={errorMessage} />}</div>
-        : <div className='upload-list'>{uploadedFile[0].name}</div>
-    }
+  return <div className="UploadFile" style={{ backgroundImage: `url(${bgUrl})` }} >
+    <img src={blogoImg}></img>
+    <div className='cont'>
+      <input style={{ display: 'none' }} ref={uploadInputRef} type='file' onChange={selectedFile} ></input>
+      {
+        uploadedFile == '' ? <div>
+          <div onDragOver={(event) => { event.preventDefault() }} >
+            <div className='select-area' onDrag={() => { }} onClick={() => { uploadInputRef.current.click() }}>Drag or Select a Song<br />(only format wav/mp3)</div>
+            {errorMessage && <Message severity="error" text={errorMessage} />}</div>
+        </div> :
+          <div className='upload-list'> {uploadedFile[0].name}</div>
+      }
 
-    {
-      isLoading ? <Loading></Loading> : ""
-    }
+      {
+        isLoading ? <Loader></Loader> : ""
+      }
 
-    {
-      !isLoading && typeof uploadedFile[0] != "undefined" ?
-        <div> {/* define buttons from the server response*/}
-          <p>Try Join Guitar To---</p><br></br>
-          <button onClick={() => getVocal()}>Vocal and Drums (for the rate:)</button>
-          <button onClick={() => getPlayback()}>Playback (without guitar ofcourse:)</button>
-          <button onClick={() => getSongWithoutGuitar()}>Playback + Vocal</button><br /><br />
-          <button onClick={() => navigate('/record', { state: choice })}>Let's Start Record Together</button>
-        </div> : ""
-    }
-    {
-      choice!=''?<audio src={choice} controls></audio>:''
-    }
-    {/*  איך לעשות שהשיר יושמע ללא הרצועת שמע הדיפולטיבית אלא ע"י כפתור אחר?*/}
-  </div >
+      {
+        !isLoading && typeof uploadedFile[0] != "undefined" ?
+          <div> {/* define buttons from the server response*/}
+            <h5> Choose what to accompany your guitar playing---</h5><br></br>
+            <div className='sources-options'>
+              <div onClick={() => setChoice(vocalDrumsUrl)} className='option'>
+                <AudioPlayer song={vocalDrumsUrl} width={'80px'} height={'80px'} />
+                <audio ><source src='http://localhost:5000/get_vocal_drums' /></audio>
+                <p>Vocal + Drums</p>
+              </div>
+              <div className='option'>
+                <AudioPlayer song={tuneUrl} width={'80px'} height={'80px'} />
+                <audio controls><source type='audio/mpeg' src='http://localhost:5000/get_tune'></source></audio>
+                <p>Tune</p>
+              </div>
+              <div onClick={() => setChoice(songWithoutGuitarUrl)} className='option'>
+                <AudioPlayer song={songWithoutGuitarUrl} width={'80px'} height={'80px'} />
+                <audio src='http://localhost:5000/get_song_without_guitar'></audio>
+                <p>Song without guitar</p>
+              </div>
+            </div>
+            <img style={{ marginLeft: '33%', cursor: 'pointer' }} src={record} onClick={() => navigate('/user-record', { state: choice })}></img>
+          </div>
+          : ""
+      }
+      {
+        choice != '' ? <audio style={{ display: 'none' }} autoPlay src={choice} ></audio> : ''
+      }
+      {/*  איך לעשות שהשיר יושמע ללא הרצועת שמע הדיפולטיבית אלא ע"י כפתור אחר?*/}
+    </div >
+  </div>
+
 }
 
 export default UploadFile;

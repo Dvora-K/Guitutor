@@ -1,0 +1,39 @@
+.FeedbackOptions {
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    button {
+        padding: 20px;
+        margin: 10px;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        font-size: 18px;
+        font-weight: 550;
+
+        &.c {
+            background-color: #d19b8f;
+            border: 1px solid #d19b8f;
+
+            &:hover {
+                background-color: rgba(255, 255, 255, 0);
+            }
+        }
+
+        &.p {
+            background-color: rgb(146, 116, 106);
+            border: 1px solid rgb(137, 101, 89);
+
+            &:hover {
+                background-color: rgba(255, 255, 255, 0);
+            }
+        }
+    }
+
+}

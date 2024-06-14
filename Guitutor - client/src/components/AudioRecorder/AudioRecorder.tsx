@@ -1,7 +1,9 @@
 import React, { useRef, useState } from 'react';
 import './AudioRecorder.scss';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Loading from '../loading/loading';
+import 'primeicons/primeicons.css';
+import bg from '../../assets/pages-bg.png'
+import Loader from '../Loader/Loader';
 
 const AudioRecorder: React.FC = () => {
   const [recordedUrl, setRecordedUrl] = useState<string>('');
@@ -14,6 +16,7 @@ const AudioRecorder: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const songToLoad = location.state
+  const [isLoading, setIsLoading] = useState(false)
 
   const startRecording = async (): Promise<void> => {
     try {
@@ -72,9 +75,10 @@ const AudioRecorder: React.FC = () => {
         method: 'POST',
         body: formData,
       });
-
+      console.log(response)
       if (response.ok) {
         console.log('Blob sent successfully!');
+        navigate('/feedback-option')
       } else {
         console.error('Failed to send blob');
       }
@@ -84,27 +88,29 @@ const AudioRecorder: React.FC = () => {
   };
 
   return (
-    <div className="audio-recorder">
-      <audio controls>
-        <source src={songToLoad} type="audio/wav"></source>
-      </audio>
-      {recordedUrl != '' ? <audio controls src={recordedUrl} /> : ""}
+    <div className='audio-recorder' style={{ backgroundImage: `url(${bg})` }}>
+      <div className='content'>
+        <h2>Record your perfomance---</h2>
+        <h5>Here you can listen to {songToLoad} and play your guitar<br /> with it according listening.</h5>
+        <audio controls>
+          <source src={songToLoad} type="audio/wav"></source>
+        </audio><br />
+        {recordedUrl != '' ? <div><p>your recording ⬇️ </p><audio controls src={recordedUrl} /></div> : ""}
 
-      {
-        !started ? <button className="start" onClick={() => { setStarted(true); startRecording() }}>Start Recording</button>
-          : <button className={stopped ? "hide" : "stop"} onClick={() => { setStopped(true); stopRecording(); }}>Stop Recording</button>
-      }
-      { }
-
-      {
-        stopped ? <div><button className='r' onClick={() => { setRecordedUrl(''); setStarted(false); setStopped(false) }}>Restart Recording</button>
-          <button className='c' onClick={async () => {
-            await sendBlobToServer(recordedBlob);
-            // navigate('') // navigate to the next page...
-          }}>Send Record</button>
-        </div> : ""
-      }
-    </div >
+        {
+          !started ? <i className="pi pi-microphone" onClick={() => { setStarted(true); startRecording() }} style={{ fontSize: '4rem' }}></i> :
+            <i className={stopped ? "hide" : "pi pi-stop-circle"} style={{ fontSize: '4rem' }} onClick={() => { setStopped(true); stopRecording(); }}></i>
+        }
+        {
+          stopped ? <div><button className='r' onClick={() => { setRecordedUrl(''); setStarted(false); setStopped(false) }}>Restart Recording</button>
+            <button className='s' onClick={async () => {
+              await sendBlobToServer(recordedBlob);
+            }}>Send Record</button>
+          </div> : ""
+        }
+        {isLoading ? <Loader></Loader> : ""}
+      </div >
+    </div>
   );
 };
 

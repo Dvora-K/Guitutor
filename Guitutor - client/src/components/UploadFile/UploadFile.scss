@@ -1,38 +1,82 @@
-.area {
-    border: black solid 2px;
-    border-radius: 20px;
-    height: 500px;
-    width: 600px;
-    margin: auto;
-}
+.UploadFile {
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  text-align: center;
+  align-items: center;
+  justify-content: space-between;
+  height: 100vh;
+  // padding: 20px;
+  color: rgb(41, 17, 5);
 
-// .select {
-//     // margin-top: 35%;
-//     // width: 50%;
-//     // margin-left: 37%;
-// }
-
-.upload-list {
+  .cont {
+    flex-grow: 1;
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: space-between;
+    width: 100%;
+  }
+
+  .select-area {
+    width: 300px;
+    height: 300px;
+    border: 5px solid rgb(160, 92, 66);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    cursor: pointer;
+    color: black;
+    text-align: center;
+    margin-right: 50px;
+    // margin-top: 0px;
+  }
+
+  .upload-list {
     align-items: center;
     padding: 10px;
     margin: 5px;
     border-radius: 8px;
     border: 1px solid #ccc;
-    background-color: #f9f9f9;
-}
-
-button {
-    background-color: #4373e2;
-    color: #fff;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+    background-color: #000000b6;
+    color: rgb(255, 255, 255);
+    align-items: center;
+    padding: 20px;
+    margin: 15px;
+    width: 40%;
     border-radius: 8px;
-  
-    &:hover {
-      background-color: #0041d8;
-    }
+    border: none;
+    background-color: #f9f9f956;
+    color: rgb(195, 110, 19);
   }
+
+  .sources-options {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .option {
+    display: flex;
+    flex-direction: column;
+    align-items: center
+  }
+
+  img {
+    width: 100%;
+    max-width: 300px;
+    /* Adjust based on your desired maximum width */
+    height: auto;
+    margin-right: 80%;
+    // margin-top: 10px;
+  }
+  .audio-option {
+    width: 25%;
+    height: auto;
+    margin: 0 auto;
+
+  }
+
+}

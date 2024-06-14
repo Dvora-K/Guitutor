@@ -1,65 +1,45 @@
 // AudioRecorder.scss
 .audio-recorder {
+  height: 100vh;
+  width: 100%;
+  background-size: cover;
+  color: rgb(41, 17, 5);
+
+  .content {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    width: 300px;
-    margin: 0 auto;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  
-    audio {
-      margin-bottom: 20px;
-      width: 100%;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-  
-    button {
-      padding: 10px 20px;
-      margin: 5px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 16px;
-      
-      &.r{
-        background-color:blue;
-        &:hover{
-          background-color:rgb(0, 0, 186);
-        }
-      }
+    justify-content: space-around;
+    height: 70vh;
+    padding-top: 110px;
+    padding-right: 50px;
+  }
 
-      &.c{
-        background-color: cadetblue;
-        &:hover{
-          background-color: rgb(55, 111, 113);
-        }
-      }
-  
-      &.start {
-        background-color: #4caf50;
-        color: white;
-  
-        &:hover {
-          background-color: #1c6a20;
-        }
-      }
-  
-      &.stop {
-        background-color: #f44336;
-        color: white;
-  
-        &:hover {
-          background-color: #910200;
-        }
+  button {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+
+    &.s {
+      background-color: #d19b8f;
+      border: 1px solid #d19b8f;
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0);
       }
     }
-    .hide{
-      display: none;
+
+    &.r {
+      background-color: rgba(255, 255, 255, 0);
+      border: 1px solid rgb(137, 101, 89);
+
+      &:hover {
+        background-color: rgb(146, 116, 106);
+      }
     }
   }
-  
+}
