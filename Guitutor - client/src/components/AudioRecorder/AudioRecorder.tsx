@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import './AudioRecorder.scss';
 import { useLocation, useNavigate } from 'react-router-dom';
-import 'primeicons/primeicons.css';
 import bg from '../../assets/pages-bg.png'
 import Loader from '../Loader/Loader';
 

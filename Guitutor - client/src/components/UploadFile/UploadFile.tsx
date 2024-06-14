@@ -1,6 +1,5 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
 import './UploadFile.scss';
-import 'primeicons/primeicons.css';
 import { useNavigate } from 'react-router-dom';
 import FileService from '../../service/file.service';
 import { Message } from 'primereact/message';

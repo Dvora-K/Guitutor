@@ -36,20 +36,19 @@
         }
 
         .start {
-            font-size: 20px;
+            font-size: 22px;
             background-color: rgb(88, 54, 26);
             color: white;
             border: 2px solid rgb(88, 54, 26);
             padding: 10px 20px;
-            border-radius: 15px;
+            border-radius: 70px;
             cursor: pointer;
             margin-top: 20px;
-            width: 35%;
-
+            width: 40%;
+            
             &:hover {
                 background-color: white;
                 color: rgb(88, 54, 26);
-                border: 2px solid rgb(88, 54, 26);
             }
         }
     }

@@ -7,3 +7,14 @@ An AI-based system designed to help beginners learn guitar by providing real-tim
 ## install packages
     ``sh
       py -m pip install -r requirement.txt
+
+      ``sh
+      npm install
+
+## run project
+    ``sh
+      npm start
+
+    ``sh
+      py -m server.py
+

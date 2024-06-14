@@ -3,6 +3,7 @@ import './AudioPlayer.scss';
 import useSound from "use-sound"; // for handling the sound
 import playbtn from '../../assets/btn-play.png'
 import stop from '../../assets/btn-stop.png'
+
 interface AudioPlayerProps {
   song: any,
   width: any,
