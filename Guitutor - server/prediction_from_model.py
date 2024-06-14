@@ -59,9 +59,10 @@ def save_song_data(filename):
 def get_prediction(audio_file):
     wav_file = convert_to_wav(audio_file, output_dir=".")
     file_data = save_song_data(wav_file)
-    # print(file_data)
+    print(file_data)
     try:
         prediction = model.predict(file_data.iloc[[0]])
+        print("prediction:", prediction)
     except KeyError as e:
         print(f"KeyError: {e}. Skipping prediction.")
         return None

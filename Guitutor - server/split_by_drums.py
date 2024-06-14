@@ -1,11 +1,10 @@
 import os
-
 import librosa
 import numpy as np
 from pydub import AudioSegment
 import scipy.io.wavfile as wavfile
 from recognize_chord_name import find_chord
-from more_functions import makedir
+from more_functions import makedir, find_scale
 
 
 def split_by_drums_and_recognize_chords(drums_path, guitar_path, fname):
@@ -18,19 +17,11 @@ def split_by_drums_and_recognize_chords(drums_path, guitar_path, fname):
     beat_times = librosa.frames_to_time(beats, sr=sr)
     print("Detected beats at times (seconds):",
           beat_times)  # Function to separate stems (implement or use your existing function)
-    # Load the audio file into a pydub AudioSegment for easy slicing
-    # audio_segment = AudioSegment.from_file(guitar_path)
-    # segments = create_segments(audio_segment, beat_times)
     chords_path = process_audio(guitar_path, drums_stem)
     print("Segments and chords processed.")
     return chords_path
 
 
-# def separate_stems(other_path):
-#     y, sr = librosa.load(other_path, sr=None)
-#     return y, sr
-
-# Function to convert librosa time to pydub milliseconds
 def time_to_ms(time):
     return int(time * 1000)
 
@@ -55,9 +46,9 @@ def create_segments(audio_segment, beat_times):
     return segments
 
 
-# Recognize chords for each segment
 def build_arr_chords(segments, sr):
     recognized_chords = []
+    arr_chord_to_filter = []
     for index, segment in enumerate(segments):
         seg_path = save_segment_to_wav(segment, sr, index)
 
@@ -70,13 +61,21 @@ def build_arr_chords(segments, sr):
             print(f"Skipping empty or silent segment at index {index}")
             continue
 
-        chord, i = find_chord(seg_path)
-        recognized_chords.append(chord)
-        print(f"Recognized chord: {chord}")
+        chord = find_chord(seg_path)
+        segment_length = librosa.get_duration(y=audio_data, sr=sample_rate)
+        arr_chord_to_filter.append(chord)
+        recognized_chords.append({'name': chord, 'seconds': segment_length})
+    arr_chord, scale, full_scale, index = find_scale(arr_chord_to_filter)
     file_path = rf'{os.getcwd()}\songs\{filename}\{filename}_chords.txt'
+
     with open(file_path, 'w') as file:
-        for ch in recognized_chords:
-            file.write(f'{ch}, ')
+        ind = len(arr_chord)
+        print(len(recognized_chords) - len(arr_chord))
+        for i, ch in enumerate(recognized_chords):
+            if i < ind:
+                ch['name'] = arr_chord[i]
+                file.write(f"{{ 'name': '{ch['name']}', 'seconds': {ch['seconds']} }},\n")
+
     print(recognized_chords)
     return file_path
 
@@ -122,16 +121,9 @@ def process_audio(guitar_path, drum_stem):
     segments = create_segments(audio_segment, beat_times)
 
     recognized_chords_path = build_arr_chords(segments, sr)
-
-    # recognized_chords = []
-    # for segment in segments:
-    #     chord = recognize_chord(segment)
-    #     recognized_chords.append(chord)
     return recognized_chords_path
 
 
-# Example usage
-# Load the audio file
-drums = r"C:\Users\User\Desktop\Guitutor\songs\baavur\drumss.mp3"
-other = r"C:\Users\User\Desktop\Guitutor\songs\baavur\guitar.mp3"
-path = split_by_drums_and_recognize_chords(drums, other, 'baavur')
+guitar = r"C:\Users\User\Desktop\Guitutor\songs\Shmot_Hatzadikim\Shmot_Hatzadikim_acoustic_guitar_split_by_lalalai.mp3"
+drums = r"C:\Users\User\Desktop\Guitutor\songs\Shmot_Hatzadikim\Shmot_Hatzadikim_vocal_drums.mp3"
+split_by_drums_and_recognize_chords(guitar, drums, 'Shmot_Hatzadikim')

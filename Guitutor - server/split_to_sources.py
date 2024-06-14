@@ -7,6 +7,7 @@ from pydub import AudioSegment
 from torchaudio.pipelines import HDEMUCS_HIGH_MUSDB_PLUS
 from torchaudio.utils import download_asset
 from torchaudio.transforms import Fade
+from more_functions import makedir
 
 print(torch.__version__)
 print(torchaudio.__version__)
@@ -77,15 +78,6 @@ def separate_sources(
     return final
 
 
-def plot_spectrogram(stft, title="Spectrogram"):
-    magnitude = stft.abs()
-    spectrogram = 20 * torch.log10(magnitude + 1e-8).numpy()
-    _, axis = plt.subplots(1, 1)
-    axis.imshow(spectrogram, cmap="viridis", vmin=-60, vmax=0, origin="lower", aspect="auto")
-    axis.set_title(title)
-    plt.tight_layout()
-
-
 # run model:
 
 # We download the audio file from our storage. Feel free to download another file and use audio from a specific path
@@ -154,10 +146,8 @@ def load_song(song_router):
     return sources
 
 
-def build_vocal(file, mode='upload'):
+def build_vocal(file):
     directory = rf"{os.getcwd()}\songs\{file}"
-    if mode == 'record':
-        directory = rf"{os.getcwd()}\songs\{file}\user"
     # Write the vocal file
     wavio.write(rf"{directory}\{file}_vocal.wav", sources[3][0] + sources[3][1], sample_rate, sampwidth=2)
     # Convert to mp3
@@ -172,6 +162,7 @@ def build_drums(file, mode='upload'):
     directory = rf"{os.getcwd()}\songs\{file}"
     if mode == 'record':
         directory = rf"{os.getcwd()}\songs\{file}\user"
+        makedir(directory)
     # Write the vocal file
     wavio.write(rf"{directory}\{file}_drums.wav", sources[0][0] + sources[0][1], sample_rate, sampwidth=2)
     # Convert to mp3
@@ -182,10 +173,8 @@ def build_drums(file, mode='upload'):
     return rf"{directory}\{file}_drums.mp3"
 
 
-def build_bass(file, mode='upload'):
+def build_bass(file):
     directory = rf"{os.getcwd()}\songs\{file}"
-    if mode == 'record':
-        directory = rf"{os.getcwd()}\songs\{file}\user"
     wavio.write(rf"{directory}\{file}_bass.wav", sources[1][0] + sources[1][1], sample_rate, sampwidth=2)
     sound = AudioSegment.from_wav(rf"{directory}\{file}_bass.wav")
     sound.export(rf"{directory}\{file}_bass.mp3", format='mp3')
@@ -196,6 +185,7 @@ def build_other(file, mode='upload'):
     directory = rf"{os.getcwd()}\songs\{file}"
     if mode == 'record':
         directory = rf"{os.getcwd()}\songs\{file}\user"
+        makedir(directory)
     wavio.write(rf"{directory}\{file}_other.wav", sources[2][0] + sources[2][1], sample_rate, sampwidth=2)
     sound = AudioSegment.from_wav(rf"{directory}\{file}_other.wav")
     sound.export(rf"{directory}\{file}_other.mp3", format='mp3')
@@ -203,10 +193,8 @@ def build_other(file, mode='upload'):
     return rf"{directory}\{file}_other.mp3"
 
 
-def build_vocal_drums(file, mode='upload'):
+def build_vocal_drums(file):
     directory = rf"{os.getcwd()}\songs\{file}"
-    if mode == 'record':
-        directory = rf"{os.getcwd()}\songs\{file}\user"
     vocal1 = sources[0][0] + sources[0][1]
     vocal2 = sources[3][0] + sources[3][1]
     wavio.write(rf"{directory}\{file}_vocal_drums.wav", vocal1 + vocal2, sample_rate, sampwidth=2)
@@ -215,21 +203,19 @@ def build_vocal_drums(file, mode='upload'):
     os.remove(rf"{directory}\{file}_vocal_drums.wav")
 
 
-def build_playback(file):
+def build_tune(file):
     directory = rf"{os.getcwd()}\songs\{file}"
     playback1 = sources[0][0] + sources[0][1]
     playback2 = sources[1][0] + sources[1][1]
-    wavio.write(rf"{directory}\{file}_playback.wav", playback1 + playback2,
+    wavio.write(rf"{directory}\{file}_tune.wav", playback1 + playback2,
                 sample_rate, sampwidth=2)
-    sound = AudioSegment.from_wav(rf"{directory}\{file}_playback.wav")
-    sound.export(rf"{directory}\{file}_playback.mp3", format='mp3')
-    os.remove(rf"{directory}\{file}_playback.wav")
+    sound = AudioSegment.from_wav(rf"{directory}\{file}_tune.wav")
+    sound.export(rf"{directory}\{file}_tune.mp3", format='mp3')
+    os.remove(rf"{directory}\{file}_tune.wav")
 
 
-def build_song_without_guitar(file, mode='upload'):
+def build_song_without_guitar(file):
     directory = rf"{os.getcwd()}\songs\{file}"
-    if mode == 'record':
-        directory = rf"{os.getcwd()}\songs\{file}\user"
     wavio.write(rf"{directory}\{file}_song_without_guitar.wav",
                 sources[1][0] + sources[1][1] + sources[0][0] + sources[0][1] + sources[3][0] + sources[3][1],
                 sample_rate, sampwidth=2)
@@ -238,11 +224,3 @@ def build_song_without_guitar(file, mode='upload'):
     os.remove(rf"{directory}\{file}_song_without_guitar.wav")
 
 # The default set of pretrained weights that has been loaded has 4 sources that it is separated into: drums, bass, other, and vocals in that order. They have been stored into the dict “audios” and therefore can be accessed there. For the four sources, there is a separate cell for each, that will create the audio, the spectrogram graph, and also calculate the SDR score. SDR is the signal-to-distortion ratio, essentially a representation to the “quality” of an audio track.
-
-# N_FFT = 4096
-# N_HOP = 4
-# stft = torchaudio.transforms.Spectrogram(
-#     n_fft=N_FFT,
-#     hop_length=N_HOP,
-#     power=None,
-# )

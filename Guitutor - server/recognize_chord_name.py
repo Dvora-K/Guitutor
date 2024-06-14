@@ -209,14 +209,14 @@ def find_value_of_one_note(note):
     freq = 55
     note_hertz = 0
     basic_note = note  # 440
-    while (basic_note > 110):
+    while basic_note > 110:
         basic_note /= 2
         octav += 1  # 3
-    while (freq * np.power(2, 1 / 12) < basic_note):
+    while freq * np.power(2, 1 / 12) < basic_note:
         freq *= np.power(2, 1 / 12)
         note_number += 1
     freq_after = freq * np.power(2, 1 / 12)
-    if (basic_note - freq > freq_after - basic_note):
+    if basic_note - freq > freq_after - basic_note:
         note_number += 1
         if note_number == 12:
             note_number = 0
@@ -246,6 +246,7 @@ def find_value_of_one_note(note):
 def find_chord(path):
     wav_path = convert_to_wav(path, '.')
     arr_harmonics = find_harmonics(wav_path)
+    print("arr", arr_harmonics)
     note_0 = find_value_of_one_note(arr_harmonics[0])
     notes_arr = []
     basic_octave = note_0["octave"]
@@ -256,12 +257,13 @@ def find_chord(path):
         if n["note_name"] not in harmonic_chord_arr:
             harmonic_chord_arr.append(n["note_name"])
     type_chord = get_prediction(path)
-    for index, note_x in enumerate(notes_arr):
+    for note_x in notes_arr:
+        print("note_x:", note_x, "harmonic_chord_arr:", harmonic_chord_arr, "type_chord:", type_chord)
         if is_the_chord_by_this_note(note_x, harmonic_chord_arr, type_chord):
             if type_chord == 'Minor':
-                return f"{note_x['note_name']}M", index
+                return f"{note_x['note_name']}m"
             else:
-                return note_x['note_name'], index
+                return note_x['note_name']
     return 'None'
 
 
