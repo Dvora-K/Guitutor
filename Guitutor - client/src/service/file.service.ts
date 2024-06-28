@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { error } from 'console';
 import { url } from 'inspector';
 import { type } from 'os';
 const BASE_URL = "http://localhost:5000";
@@ -62,35 +63,25 @@ export default new class FileService {
     }
 
     async getSource(req: string) {
-        axios.get(`${BASE_URL}/get_${req}`).then((res: any) => {
-            console.log(res.data)
-            console.log(typeof (res.data))
-            const blob = new Blob([res.data], { type: 'audio/mpeg' });
+        try {
+            const response = await axios({
+                url: `${BASE_URL}/get_${req}`,
+                method: 'GET',
+                responseType: 'blob'
+            });
+            console.log(`${BASE_URL}/get_${req}`)
+            // Create a new blob object from the binary data
+            const blob = new Blob([response.data], { type: 'audio/mpeg' });
+
+            // Create a URL for the blob object
             const url = window.URL.createObjectURL(blob);
+            console.log(url)
             return url;
-        }) 
+        } catch (error) {
+            console.error('Error fetching :', error);
+            throw error;
+        }
     }
-    
-    //     try {
-    //         const response = await axios({
-    //             url: `${BASE_URL}/get_${req}`,
-    //             method: 'GET',
-    //             responseType: 'blob'
-    //         });
-    //         console.log(`${BASE_URL}/get_${req}`)
-    //         // Create a new blob object from the binary data
-    //         const blob = new Blob([response.data], { type: 'audio/mpeg' });
-
-    //         // Create a URL for the blob object
-    //         const url = window.URL.createObjectURL(blob);
-    //         console.log(url)
-    //         return url;
-    //     } catch (error) {
-    //         console.error('Error fetching :', error);
-    //         throw error;
-    // }
-
-
     async send(file: any[]) {
         try {
             console.log(file[0])

@@ -21,6 +21,7 @@ const App: React.FC = () => {
                 <Route path='feedback-option' element={<FeedbackOptions />}></Route>
                 <Route path='compare-chords' element={<FileComparison />}></Route>
                 <Route path='play-user-recording' element={<RecordingCords />}></Route>
+                {/* <Route path='aa' element={<AudioPlayer width={'100px'} height={'100px'} />}></Route> */}
             </Routes>
         </div>
     );

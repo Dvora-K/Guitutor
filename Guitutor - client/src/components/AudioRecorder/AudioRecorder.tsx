@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import './AudioRecorder.scss';
+import 'primeicons/primeicons.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 import bg from '../../assets/pages-bg.png'
 import Loader from '../Loader/Loader';
@@ -90,7 +91,7 @@ const AudioRecorder: React.FC = () => {
     <div className='audio-recorder' style={{ backgroundImage: `url(${bg})` }}>
       <div className='content'>
         <h2>Record your perfomance---</h2>
-        <h5>Here you can listen to {songToLoad} and play your guitar<br /> with it according listening.</h5>
+        <h5>Here you can listen to your choice and play your guitar<br /> with it according listening.</h5>
         <audio controls>
           <source src={songToLoad} type="audio/wav"></source>
         </audio><br />
