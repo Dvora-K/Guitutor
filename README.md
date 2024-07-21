@@ -45,3 +45,4 @@ This project is designed to help beginners learn guitar by providing real-time f
 ## Some Screenshots
 ![HomePge Screenshot](HomePage.png)
 ![ChooseFromSources Screenshot](sources.png)
+

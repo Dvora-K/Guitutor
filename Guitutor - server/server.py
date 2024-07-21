@@ -59,15 +59,14 @@ def upload_file():
             # split to sources #
             split_to_sources.load_song(song_path)
             split_to_sources.build_vocal_drums(name)
-            # split_to_sources.build_song_without_guitar(name)
             split_to_sources.build_tune(name)
             path_drums = split_to_sources.build_drums(name)
 
-            # subprocess.check_call([
-            #     'lala_command.bat',
-            #     song_path,
-            #     output_folder
-            # ])
+            subprocess.check_call([
+                'lala_command.bat',
+                song_path,
+                output_folder
+            ])
 
             path_guitar = rf"{output_folder}\{name}_acoustic_guitar_split_by_lalalai.mp3"
 
