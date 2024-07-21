@@ -43,6 +43,8 @@ This project is designed to help beginners learn guitar by providing real-time f
     React, TypeScript, SCSS
 
 ## Some Screenshots
+Homepage - Guitutor
 ![HomePge Screenshot](HomePage.png)
+After the arrangement of the song. Getting the song's origins
 ![ChooseFromSources Screenshot](sources.png)
 
